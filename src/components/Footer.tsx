@@ -1,5 +1,4 @@
-
-import { Twitter, Github, Linkedin, Discord } from "lucide-react";
+import { Twitter, Github, Linkedin, MessageSquare } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
 const Footer = () => {
@@ -24,7 +23,7 @@ const Footer = () => {
                 <Twitter size={20} className="text-white/70" />
               </a>
               <a href="#" className="h-10 w-10 rounded-full bg-secondary flex items-center justify-center hover:bg-primary/20 transition-colors">
-                <Discord size={20} className="text-white/70" />
+                <MessageSquare size={20} className="text-white/70" />
               </a>
               <a href="#" className="h-10 w-10 rounded-full bg-secondary flex items-center justify-center hover:bg-primary/20 transition-colors">
                 <Linkedin size={20} className="text-white/70" />
