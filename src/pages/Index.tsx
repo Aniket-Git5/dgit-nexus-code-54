@@ -21,8 +21,8 @@ const Index = () => {
       metaDescription.setAttribute('content', 'Experience secure, censorship-resistant code hosting with Dgit. Leveraging the Internet Computer for true code ownership and decentralized development.');
     } else {
       metaDescription = document.createElement('meta');
-      metaDescription.name = 'description';
-      metaDescription.content = 'Experience secure, censorship-resistant code hosting with Dgit. Leveraging the Internet Computer for true code ownership and decentralized development.';
+      metaDescription.setAttribute('name', 'description');
+      metaDescription.setAttribute('content', 'Experience secure, censorship-resistant code hosting with Dgit. Leveraging the Internet Computer for true code ownership and decentralized development.');
       document.head.appendChild(metaDescription);
     }
     

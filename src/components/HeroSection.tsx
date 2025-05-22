@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { GitBranch, Shield, PadlockOpen } from "lucide-react";
+import { GitBranch, Shield, LockOpen } from "lucide-react";
 
 const HeroSection = () => {
   return (
@@ -57,7 +57,7 @@ const HeroSection = () => {
                   </div>
                   <div className="flex items-center gap-2">
                     <Shield size={16} className="text-green-400" />
-                    <PadlockOpen size={16} className="text-purple-400" />
+                    <LockOpen size={16} className="text-purple-400" />
                   </div>
                 </div>
                 <pre className="bg-background/50 p-4 rounded-lg overflow-x-auto text-xs md:text-sm font-mono">
