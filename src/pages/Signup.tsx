@@ -77,7 +77,7 @@ const Signup = () => {
   const isPasswordValid = Object.values(passwordValidation).every(Boolean);
 
   const handleClose = () => {
-    navigate(-1); // Go back to previous page
+    navigate('/'); // Go directly to landing page
   };
 
   return (
