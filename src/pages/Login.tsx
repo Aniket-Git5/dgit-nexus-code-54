@@ -3,18 +3,23 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { GitBranch, Eye, EyeOff } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { GitBranch, Eye, EyeOff, X } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Handle login logic here
     console.log('Login attempt:', { email, password });
+  };
+
+  const handleClose = () => {
+    navigate(-1); // Go back to previous page
   };
 
   return (
@@ -38,7 +43,16 @@ const Login = () => {
       {/* Main content */}
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-md mx-auto">
-          <div className="glass p-8 space-y-6">
+          <div className="glass p-8 space-y-6 relative">
+            {/* Close button */}
+            <button
+              onClick={handleClose}
+              className="absolute top-4 right-4 text-white/60 hover:text-white transition-colors p-1 rounded-sm hover:bg-white/10"
+              aria-label="Close"
+            >
+              <X size={20} />
+            </button>
+
             <div className="text-center space-y-2">
               <h1 className="font-heading text-3xl font-bold text-white">Sign in to Dgit</h1>
               <p className="text-white/60">Welcome back to the decentralized future</p>
