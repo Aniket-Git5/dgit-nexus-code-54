@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { GitBranch, Eye, EyeOff, Check, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -13,7 +14,9 @@ const Signup = () => {
     username: '',
     email: '',
     password: '',
-    agreeToTerms: false
+    country: '',
+    agreeToTerms: false,
+    emailUpdates: false
   });
 
   const [passwordValidation, setPasswordValidation] = useState({
@@ -22,6 +25,39 @@ const Signup = () => {
     lowercase: false,
     number: false
   });
+
+  const countries = [
+    'United States',
+    'Canada',
+    'United Kingdom',
+    'Germany',
+    'France',
+    'Japan',
+    'Australia',
+    'Brazil',
+    'India',
+    'China',
+    'Mexico',
+    'Spain',
+    'Italy',
+    'Netherlands',
+    'Sweden',
+    'Norway',
+    'Denmark',
+    'Finland',
+    'Switzerland',
+    'Austria',
+    'Belgium',
+    'Poland',
+    'South Korea',
+    'Singapore',
+    'New Zealand',
+    'Ireland',
+    'Portugal',
+    'Czech Republic',
+    'Hungary',
+    'Greece'
+  ];
 
   const handlePasswordChange = (password: string) => {
     setFormData(prev => ({ ...prev, password }));
@@ -167,33 +203,70 @@ const Signup = () => {
                 )}
               </div>
 
-              <div className="flex items-start space-x-2">
-                <Checkbox
-                  id="terms"
-                  checked={formData.agreeToTerms}
-                  onCheckedChange={(checked) => 
-                    setFormData(prev => ({ ...prev, agreeToTerms: checked as boolean }))
-                  }
-                  className="mt-1"
-                />
-                <div className="text-sm text-white/60">
-                  <Label htmlFor="terms" className="text-white/60 cursor-pointer">
-                    I agree to the{' '}
-                    <Link to="#" className="text-cta hover:text-cta-hover">
-                      Terms of Service
-                    </Link>{' '}
-                    and{' '}
-                    <Link to="#" className="text-cta hover:text-cta-hover">
-                      Privacy Policy
-                    </Link>
-                  </Label>
+              <div className="space-y-2">
+                <Label htmlFor="country" className="text-white">
+                  Your Country/Region *
+                </Label>
+                <Select value={formData.country} onValueChange={(value) => setFormData(prev => ({ ...prev, country: value }))}>
+                  <SelectTrigger className="bg-secondary/50 border-border text-white">
+                    <SelectValue placeholder="Select your country/region" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-secondary border-border">
+                    {countries.map((country) => (
+                      <SelectItem key={country} value={country} className="text-white hover:bg-secondary/80">
+                        {country}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-4">
+                <div className="space-y-3">
+                  <h3 className="text-white font-medium text-sm">Email Preferences</h3>
+                  <div className="flex items-start space-x-2">
+                    <Checkbox
+                      id="emailUpdates"
+                      checked={formData.emailUpdates}
+                      onCheckedChange={(checked) => 
+                        setFormData(prev => ({ ...prev, emailUpdates: checked as boolean }))
+                      }
+                      className="mt-1"
+                    />
+                    <Label htmlFor="emailUpdates" className="text-white/80 cursor-pointer text-sm">
+                      Receive occasional product updates and announcements
+                    </Label>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-2">
+                  <Checkbox
+                    id="terms"
+                    checked={formData.agreeToTerms}
+                    onCheckedChange={(checked) => 
+                      setFormData(prev => ({ ...prev, agreeToTerms: checked as boolean }))
+                    }
+                    className="mt-1"
+                  />
+                  <div className="text-sm text-white/60">
+                    <Label htmlFor="terms" className="text-white/60 cursor-pointer">
+                      I agree to the{' '}
+                      <Link to="#" className="text-cta hover:text-cta-hover">
+                        Terms of Service
+                      </Link>{' '}
+                      and{' '}
+                      <Link to="#" className="text-cta hover:text-cta-hover">
+                        Privacy Policy
+                      </Link>
+                    </Label>
+                  </div>
                 </div>
               </div>
 
               <Button 
                 type="submit" 
                 className="w-full btn-primary"
-                disabled={!isPasswordValid || !formData.agreeToTerms}
+                disabled={!isPasswordValid || !formData.agreeToTerms || !formData.country}
               >
                 Create account
               </Button>
