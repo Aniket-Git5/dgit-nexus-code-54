@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
-import { GitBranch, Search, Eye, EyeOff, Check, X } from 'lucide-react';
+import { GitBranch, Eye, EyeOff, Check, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Signup = () => {
@@ -42,24 +42,13 @@ const Signup = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header with search */}
+      {/* Header */}
       <header className="border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
             <GitBranch size={28} className="text-cta" />
             <span className="font-heading text-2xl font-bold purple-glow">Dgit</span>
           </Link>
-          
-          <div className="flex-1 max-w-md mx-8">
-            <div className="relative">
-              <Search size={16} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
-              <Input
-                type="text"
-                placeholder="Search repositories..."
-                className="pl-10 bg-secondary/30 border-border"
-              />
-            </div>
-          </div>
           
           <nav className="flex items-center gap-4">
             <Link to="/login" className="text-white/80 hover:text-white transition-colors">
