@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { GitBranch, Shield, LockOpen } from "lucide-react";
 import { useRef, useEffect } from "react";
@@ -16,7 +15,7 @@ const HeroSection = () => {
       const x = ((e.clientX - rect.left) / rect.width) * 100;
       const y = ((e.clientY - rect.top) / rect.height) * 100;
       
-      // Send cursor position to iframe
+      // Send cursor position to iframe with more frequent updates
       try {
         iframeRef.current.contentWindow?.postMessage({
           type: 'cursor_position',
@@ -30,62 +29,121 @@ const HeroSection = () => {
 
     const section = sectionRef.current;
     if (section) {
+      // Use both mousemove and mouseover for better tracking
       section.addEventListener('mousemove', handleMouseMove);
-      return () => section.removeEventListener('mousemove', handleMouseMove);
+      section.addEventListener('mouseover', handleMouseMove);
+      return () => {
+        section.removeEventListener('mousemove', handleMouseMove);
+        section.removeEventListener('mouseover', handleMouseMove);
+      };
     }
   }, []);
 
   useEffect(() => {
-    // Function to hide Spline branding after iframe loads
+    // Multiple methods to hide Spline branding
     const hideSplineBranding = () => {
       const iframe = iframeRef.current;
       if (!iframe) return;
 
-      try {
-        // Wait for iframe to load and then inject CSS to hide branding
-        iframe.onload = () => {
-          setTimeout(() => {
-            const style = document.createElement('style');
-            style.textContent = `
-              iframe[src*="spline.design"] {
-                position: relative;
-              }
-              iframe[src*="spline.design"] + div {
-                position: absolute;
-                bottom: 0;
-                right: 0;
-                width: 200px;
-                height: 60px;
-                background: transparent;
-                z-index: 1000;
-                pointer-events: none;
-              }
-            `;
-            document.head.appendChild(style);
+      // Method 1: CSS injection
+      const injectHidingCSS = () => {
+        const style = document.createElement('style');
+        style.id = 'spline-branding-hide';
+        style.textContent = `
+          /* Hide Spline branding in all possible ways */
+          iframe[src*="spline.design"] {
+            position: relative !important;
+          }
+          
+          /* Target common Spline branding selectors */
+          [class*="spline"], [class*="Spline"], 
+          [id*="spline"], [id*="Spline"],
+          a[href*="spline.design"],
+          div[style*="spline"], span[style*="spline"],
+          .watermark, .branding, .credits,
+          [class*="watermark"], [class*="branding"], [class*="credits"] {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+          }
+          
+          /* Hide bottom-right elements that might be branding */
+          iframe[src*="spline.design"] ~ div,
+          iframe[src*="spline.design"] + div {
+            display: none !important;
+          }
+        `;
+        
+        // Remove existing style if present
+        const existingStyle = document.getElementById('spline-branding-hide');
+        if (existingStyle) {
+          existingStyle.remove();
+        }
+        
+        document.head.appendChild(style);
+      };
 
-            // Create overlay to hide the branding
-            const overlay = document.createElement('div');
-            overlay.style.position = 'absolute';
-            overlay.style.bottom = '0';
-            overlay.style.right = '0';
-            overlay.style.width = '200px';
-            overlay.style.height = '60px';
-            overlay.style.background = 'transparent';
-            overlay.style.zIndex = '1000';
-            overlay.style.pointerEvents = 'none';
-            
-            const iframeContainer = iframe.parentElement;
-            if (iframeContainer) {
-              iframeContainer.appendChild(overlay);
-            }
-          }, 1000);
-        };
-      } catch (error) {
-        console.log('Could not hide Spline branding due to cross-origin restrictions');
-      }
+      // Method 2: Create multiple overlays to block branding
+      const createBlockingOverlays = () => {
+        const iframeContainer = iframe.parentElement;
+        if (!iframeContainer) return;
+
+        // Remove existing overlays
+        const existingOverlays = iframeContainer.querySelectorAll('.spline-overlay');
+        existingOverlays.forEach(overlay => overlay.remove());
+
+        // Create overlays for common branding positions
+        const positions = [
+          { bottom: '0', right: '0', width: '200px', height: '60px' },
+          { bottom: '10px', right: '10px', width: '180px', height: '40px' },
+          { bottom: '0', right: '0', width: '100%', height: '80px' },
+        ];
+
+        positions.forEach((pos, index) => {
+          const overlay = document.createElement('div');
+          overlay.className = 'spline-overlay';
+          overlay.style.position = 'absolute';
+          overlay.style.bottom = pos.bottom;
+          overlay.style.right = pos.right;
+          overlay.style.width = pos.width;
+          overlay.style.height = pos.height;
+          overlay.style.background = 'transparent';
+          overlay.style.zIndex = (1010 + index).toString();
+          overlay.style.pointerEvents = 'none';
+          iframeContainer.appendChild(overlay);
+        });
+      };
+
+      // Apply methods immediately
+      injectHidingCSS();
+      createBlockingOverlays();
+
+      // Apply methods after iframe loads
+      iframe.onload = () => {
+        setTimeout(() => {
+          injectHidingCSS();
+          createBlockingOverlays();
+        }, 100);
+        
+        setTimeout(() => {
+          injectHidingCSS();
+          createBlockingOverlays();
+        }, 1000);
+        
+        setTimeout(() => {
+          injectHidingCSS();
+          createBlockingOverlays();
+        }, 3000);
+      };
     };
 
     hideSplineBranding();
+    
+    // Reapply branding hiding periodically
+    const interval = setInterval(hideSplineBranding, 2000);
+    
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -101,19 +159,13 @@ const HeroSection = () => {
           frameBorder='0' 
           width='100%' 
           height='100%'
-          className="pointer-events-none"
+          className="pointer-events-auto"
           style={{ 
             filter: 'contrast(1.1) saturate(1.2)',
             border: 'none'
           }}
           title="3D Background Model"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        />
-        
-        {/* Additional overlay to ensure branding is hidden */}
-        <div 
-          className="absolute bottom-0 right-0 w-48 h-16 bg-transparent pointer-events-none"
-          style={{ zIndex: 1001 }}
         />
       </div>
 
@@ -162,7 +214,7 @@ const HeroSection = () => {
           <div className="lg:col-span-2 animate-float">
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-tr from-purple-700/30 to-purple-500/20 blur-lg rounded-2xl"></div>
-              <div className="glass p-6 relative">
+              <div className="glass p-6 relative" style={{ zIndex: 20 }}>
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
                     <GitBranch size={20} className="text-purple-400" />
