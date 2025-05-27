@@ -1,18 +1,74 @@
 
 import { Button } from "@/components/ui/button";
 import { GitBranch, Shield, LockOpen } from "lucide-react";
+import { useRef, useEffect } from "react";
 
 const HeroSection = () => {
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!iframeRef.current || !sectionRef.current) return;
+      
+      // Check if cursor is over a button
+      const target = e.target as HTMLElement;
+      if (target.tagName === 'BUTTON' || target.closest('button')) {
+        return;
+      }
+
+      // Calculate cursor position relative to the section
+      const rect = sectionRef.current.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      
+      // Send cursor position to iframe (if the iframe supports it)
+      try {
+        iframeRef.current.contentWindow?.postMessage({
+          type: 'cursor_position',
+          x: x,
+          y: y
+        }, '*');
+      } catch (error) {
+        // Silently handle cross-origin restrictions
+      }
+    };
+
+    const section = sectionRef.current;
+    if (section) {
+      section.addEventListener('mousemove', handleMouseMove);
+      return () => section.removeEventListener('mousemove', handleMouseMove);
+    }
+  }, []);
+
   return (
-    <section className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
-      {/* Background effects */}
-      <div className="absolute inset-0 bg-network-pattern opacity-30"></div>
-      <div className="absolute inset-0 bg-gradient-to-b from-purple-900/20 to-background"></div>
+    <section 
+      ref={sectionRef}
+      className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden"
+    >
+      {/* 3D Model Background - Only on tablet and larger screens */}
+      <div className="absolute inset-0 hidden md:block">
+        <iframe 
+          ref={iframeRef}
+          src='https://my.spline.design/boxeshover-bf8IdvzQsixBOcyEF37yhUSD/' 
+          frameBorder='0' 
+          width='100%' 
+          height='100%'
+          className="pointer-events-none"
+          style={{ zIndex: 1 }}
+          title="3D Background Model"
+        />
+      </div>
+
+      {/* Original background effects for smaller screens and as fallback */}
+      <div className="absolute inset-0 bg-network-pattern opacity-30 md:hidden"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-purple-900/20 to-background md:hidden"></div>
       
-      {/* Purple glowing orbs */}
-      <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-purple-700/20 blur-3xl animate-pulse-slow"></div>
-      <div className="absolute bottom-1/4 right-1/3 w-96 h-96 rounded-full bg-purple-800/20 blur-3xl animate-pulse-slow"></div>
+      {/* Purple glowing orbs - only on smaller screens */}
+      <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-purple-700/20 blur-3xl animate-pulse-slow md:hidden"></div>
+      <div className="absolute bottom-1/4 right-1/3 w-96 h-96 rounded-full bg-purple-800/20 blur-3xl animate-pulse-slow md:hidden"></div>
       
+      {/* Content layer */}
       <div className="container mx-auto px-4 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-center">
           <div className="lg:col-span-3 space-y-8 animate-fade-in">
@@ -31,10 +87,10 @@ const HeroSection = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <Button className="btn-primary">
+              <Button className="btn-primary relative z-20">
                 Get Early Access
               </Button>
-              <Button variant="outline" className="btn-secondary">
+              <Button variant="outline" className="btn-secondary relative z-20">
                 Learn More
               </Button>
             </div>
