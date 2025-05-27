@@ -35,45 +35,86 @@ const HeroSection = () => {
     }
   }, []);
 
+  useEffect(() => {
+    // Function to hide Spline branding after iframe loads
+    const hideSplineBranding = () => {
+      const iframe = iframeRef.current;
+      if (!iframe) return;
+
+      try {
+        // Wait for iframe to load and then inject CSS to hide branding
+        iframe.onload = () => {
+          setTimeout(() => {
+            const style = document.createElement('style');
+            style.textContent = `
+              iframe[src*="spline.design"] {
+                position: relative;
+              }
+              iframe[src*="spline.design"] + div {
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                width: 200px;
+                height: 60px;
+                background: transparent;
+                z-index: 1000;
+                pointer-events: none;
+              }
+            `;
+            document.head.appendChild(style);
+
+            // Create overlay to hide the branding
+            const overlay = document.createElement('div');
+            overlay.style.position = 'absolute';
+            overlay.style.bottom = '0';
+            overlay.style.right = '0';
+            overlay.style.width = '200px';
+            overlay.style.height = '60px';
+            overlay.style.background = 'transparent';
+            overlay.style.zIndex = '1000';
+            overlay.style.pointerEvents = 'none';
+            
+            const iframeContainer = iframe.parentElement;
+            if (iframeContainer) {
+              iframeContainer.appendChild(overlay);
+            }
+          }, 1000);
+        };
+      } catch (error) {
+        console.log('Could not hide Spline branding due to cross-origin restrictions');
+      }
+    };
+
+    hideSplineBranding();
+  }, []);
+
   return (
     <section 
       ref={sectionRef}
       className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden"
     >
       {/* 3D Model Background - Only on tablet and larger screens */}
-      <div className="absolute inset-0 hidden md:block">
+      <div className="absolute inset-0 hidden md:block" style={{ zIndex: 1 }}>
         <iframe 
           ref={iframeRef}
           src='https://my.spline.design/boxeshover-bf8IdvzQsixBOcyEF37yhUSD/' 
           frameBorder='0' 
           width='100%' 
           height='100%'
-          className="pointer-events-auto"
+          className="pointer-events-none"
           style={{ 
-            zIndex: 1,
-            filter: 'contrast(1.1) saturate(1.2)'
+            filter: 'contrast(1.1) saturate(1.2)',
+            border: 'none'
           }}
           title="3D Background Model"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         />
-        {/* Hide Spline branding */}
-        <style dangerouslySetInnerHTML={{
-          __html: `
-            iframe[src*="spline.design"] {
-              position: relative;
-            }
-            iframe[src*="spline.design"]::after {
-              content: '';
-              position: absolute;
-              bottom: 0;
-              right: 0;
-              width: 200px;
-              height: 50px;
-              background: transparent;
-              z-index: 999;
-              pointer-events: none;
-            }
-          `
-        }} />
+        
+        {/* Additional overlay to ensure branding is hidden */}
+        <div 
+          className="absolute bottom-0 right-0 w-48 h-16 bg-transparent pointer-events-none"
+          style={{ zIndex: 1001 }}
+        />
       </div>
 
       {/* Original background effects for smaller screens and as fallback */}
