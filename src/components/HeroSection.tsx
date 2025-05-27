@@ -10,19 +10,13 @@ const HeroSection = () => {
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (!iframeRef.current || !sectionRef.current) return;
-      
-      // Check if cursor is over a button
-      const target = e.target as HTMLElement;
-      if (target.tagName === 'BUTTON' || target.closest('button')) {
-        return;
-      }
 
       // Calculate cursor position relative to the section
       const rect = sectionRef.current.getBoundingClientRect();
       const x = ((e.clientX - rect.left) / rect.width) * 100;
       const y = ((e.clientY - rect.top) / rect.height) * 100;
       
-      // Send cursor position to iframe (if the iframe supports it)
+      // Send cursor position to iframe
       try {
         iframeRef.current.contentWindow?.postMessage({
           type: 'cursor_position',
@@ -54,10 +48,32 @@ const HeroSection = () => {
           frameBorder='0' 
           width='100%' 
           height='100%'
-          className="pointer-events-none"
-          style={{ zIndex: 1 }}
+          className="pointer-events-auto"
+          style={{ 
+            zIndex: 1,
+            filter: 'contrast(1.1) saturate(1.2)'
+          }}
           title="3D Background Model"
         />
+        {/* Hide Spline branding */}
+        <style dangerouslySetInnerHTML={{
+          __html: `
+            iframe[src*="spline.design"] {
+              position: relative;
+            }
+            iframe[src*="spline.design"]::after {
+              content: '';
+              position: absolute;
+              bottom: 0;
+              right: 0;
+              width: 200px;
+              height: 50px;
+              background: transparent;
+              z-index: 999;
+              pointer-events: none;
+            }
+          `
+        }} />
       </div>
 
       {/* Original background effects for smaller screens and as fallback */}
