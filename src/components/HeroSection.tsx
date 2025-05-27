@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { GitBranch, Shield, LockOpen } from "lucide-react";
 import { useRef, useEffect } from "react";
@@ -177,8 +178,8 @@ const HeroSection = () => {
       <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-purple-700/20 blur-3xl animate-pulse-slow md:hidden"></div>
       <div className="absolute bottom-1/4 right-1/3 w-96 h-96 rounded-full bg-purple-800/20 blur-3xl animate-pulse-slow md:hidden"></div>
       
-      {/* Content layer */}
-      <div className="container mx-auto px-4 relative z-10">
+      {/* Content layer - now with pointer-events: none, except for interactive elements */}
+      <div className="container mx-auto px-4 relative z-10 pointer-events-none">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-center">
           <div className="lg:col-span-3 space-y-8 animate-fade-in">
             <div className="inline-flex items-center gap-2 py-2 px-4 rounded-full bg-secondary/30 backdrop-blur-sm border border-purple-500/20">
@@ -195,7 +196,7 @@ const HeroSection = () => {
               Experience secure, censorship-resistant code hosting with Dgit. Leveraging the Internet Computer for true code ownership and decentralized development.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 pt-4">
+            <div className="flex flex-col sm:flex-row gap-4 pt-4 pointer-events-auto">
               <Button className="btn-primary relative z-20">
                 Get Early Access
               </Button>
