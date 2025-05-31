@@ -123,10 +123,7 @@ const InfinityLoader = () => {
         width="64"
         height="32"
         viewBox="0 0 64 32"
-        className="animate-spin"
-        style={{
-          animation: 'infinityTrace 2s ease-in-out infinite'
-        }}
+        className="animate-infinity"
       >
         <path
           d="M16 16c0-8.837 7.163-16 16-16s16 7.163 16 16-7.163 16-16 16-16-7.163-16-16zm32 0c0 8.837-7.163 16-16 16s-16-7.163-16-16 7.163-16 16-16 16 7.163 16 16z"
@@ -147,12 +144,6 @@ const InfinityLoader = () => {
           />
         </circle>
       </svg>
-      <style jsx>{`
-        @keyframes infinityTrace {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-      `}</style>
     </div>
   );
 };
