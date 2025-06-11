@@ -11,6 +11,7 @@ import {
   Eye,
   Plus
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const RepoQuickAccess = () => {
   const repositories = [
@@ -79,9 +80,11 @@ const RepoQuickAccess = () => {
             <GitBranch className="h-5 w-5" />
             Your dRepositories
           </CardTitle>
-          <Button variant="outline" size="sm" className="card-elevated">
-            <Plus className="h-4 w-4 mr-2" />
-            New dRepo
+          <Button variant="outline" size="sm" className="card-elevated" asChild>
+            <Link to="/create">
+              <Plus className="h-4 w-4 mr-2" />
+              New dRepo
+            </Link>
           </Button>
         </div>
       </CardHeader>

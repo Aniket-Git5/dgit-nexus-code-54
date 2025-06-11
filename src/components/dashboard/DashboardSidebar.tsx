@@ -91,19 +91,19 @@ const DashboardSidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
                   {currentUser.slice(0, 2).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-foreground truncate">
-                  {currentUser}
-                </p>
-                <p className="text-xs text-muted-foreground">
-                  @{currentUser}
-                </p>
-              </div>
+                 <div className="flex-1 min-w-0">
+                   <p className="text-sm font-medium text-foreground truncate">
+                     {currentUser}
+                   </p>
+                   <p className="text-xs text-muted-foreground truncate">
+                     @{currentUser}
+                   </p>
+                 </div>
             </div>
           </div>
 
           {/* Navigation content */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-6">
+          <div className="flex-1 overflow-y-auto overflow-x-hidden p-4 space-y-6">
             {/* Quick Navigation */}
             <div className="space-y-1">
               {quickNavItems.map(item => (
@@ -120,7 +120,7 @@ const DashboardSidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
                   onClick={() => setActiveSection(item.id)}
                 >
                   <item.icon className="h-4 w-4 mr-3" />
-                  <span className="flex-1 text-left">{item.label}</span>
+                         <span className="flex-1 text-left truncate">{item.label}</span>
                 </Button>
               ))}
             </div>
@@ -162,7 +162,7 @@ const DashboardSidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
                         onClick={() => setActiveSection(item.id)}
                       >
                         <item.icon className="h-4 w-4 mr-3" />
-                        <span className="flex-1 text-left">{item.label}</span>
+                        <span className="flex-1 text-left truncate">{item.label}</span>
                       </Button>
                     ))}
                   </CollapsibleContent>
@@ -186,7 +186,7 @@ const DashboardSidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
                 onClick={() => setActiveSection('settings')}
               >
                 <Settings className="h-4 w-4 mr-3" />
-                <span className="flex-1 text-left">Settings</span>
+                <span className="flex-1 text-left truncate">Settings</span>
               </Button>
             </div>
           </div>

@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { GitBranch, Star, Users, ArrowRight, Plus, Compass } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const WelcomeBanner = () => {
   return (
@@ -39,10 +40,12 @@ const WelcomeBanner = () => {
 
           {/* CTA Section */}
           <div className="flex flex-col sm:flex-row gap-3">
-            <Button className="btn-primary flex items-center gap-2">
-              <Plus className="h-4 w-4" />
-              New dRepository
-              <ArrowRight className="h-4 w-4" />
+            <Button className="btn-primary flex items-center gap-2" asChild>
+              <Link to="/create">
+                <Plus className="h-4 w-4" />
+                New dRepository
+                <ArrowRight className="h-4 w-4" />
+              </Link>
             </Button>
             <Button variant="outline" className="card-elevated flex items-center gap-2">
               <Compass className="h-4 w-4" />

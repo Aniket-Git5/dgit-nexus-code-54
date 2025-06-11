@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { GitBranch, Search, Bell, Plus, ChevronDown, User, Settings, Star, File, Menu } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Link } from 'react-router-dom';
 import DashboardSidebar from './DashboardSidebar';
 
 const DashboardHeader = () => {
@@ -66,9 +67,11 @@ const DashboardHeader = () => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56 card-elevated">
-                <DropdownMenuItem className="flex items-center gap-2">
-                  <GitBranch className="h-4 w-4" />
-                  New dRepository
+                <DropdownMenuItem className="flex items-center gap-2" asChild>
+                  <Link to="/create">
+                    <GitBranch className="h-4 w-4" />
+                    New dRepository
+                  </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem className="flex items-center gap-2">
                   <File className="h-4 w-4" />

@@ -5,7 +5,11 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { GitBranch } from 'lucide-react';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Separator } from '@/components/ui/separator';
+import { Badge } from '@/components/ui/badge';
+import { GitBranch, Lock, Globe, Check, Info, HelpCircle } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 
@@ -14,6 +18,10 @@ const CreateRepository = () => {
   const [description, setDescription] = useState('');
   const [visibility, setVisibility] = useState('public');
   const [isLoading, setIsLoading] = useState(false);
+  const [owner, setOwner] = useState('decentralized_dev');
+  const [initializeReadme, setInitializeReadme] = useState(true);
+  const [addGitignore, setAddGitignore] = useState('');
+  const [addLicense, setAddLicense] = useState('');
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -62,70 +70,230 @@ const CreateRepository = () => {
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-8">
-        <div className="max-w-2xl mx-auto">
-          <h1 className="text-3xl font-bold text-foreground mb-8">Create a New Repository</h1>
+        <div className="max-w-4xl mx-auto">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-foreground mb-2">Create a new dRepository</h1>
+            <p className="text-muted-foreground">
+              A dRepository contains all project files, including the revision history. Already have a project dRepository elsewhere?{' '}
+              <a href="#" className="text-primary hover:underline">Import a dRepository</a>.
+            </p>
+          </div>
           
-          <Card>
-            <CardHeader>
-              <CardTitle>Repository Details</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Repository Name */}
-                <div className="space-y-2">
-                  <Label htmlFor="repo-name">Repository Name *</Label>
-                  <Input
-                    id="repo-name"
-                    value={repoName}
-                    onChange={(e) => setRepoName(e.target.value)}
-                    placeholder="my-awesome-project"
-                    required
-                  />
-                </div>
-
-                {/* Description */}
-                <div className="space-y-2">
-                  <Label htmlFor="description">Description</Label>
-                  <Textarea
-                    id="description"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    placeholder="A brief description of your repository"
-                    rows={3}
-                  />
-                </div>
-
-                {/* Visibility */}
-                <div className="space-y-3">
-                  <Label>Visibility</Label>
-                  <RadioGroup value={visibility} onValueChange={setVisibility}>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="public" id="public" />
-                      <Label htmlFor="public" className="font-normal">
-                        Public - Anyone can see this repository
-                      </Label>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Main Form */}
+            <div className="lg:col-span-2">
+              <Card className="card-elevated">
+                <CardContent className="p-6">
+                  <form onSubmit={handleSubmit} className="space-y-6">
+                    {/* Owner / Repository name */}
+                    <div className="space-y-2">
+                      <Label>Owner / dRepository name *</Label>
+                      <div className="flex items-center space-x-2">
+                        <Select value={owner} onValueChange={setOwner}>
+                          <SelectTrigger className="w-48">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="decentralized_dev">decentralized_dev</SelectItem>
+                            <SelectItem value="dao-collective">dao-collective</SelectItem>
+                            <SelectItem value="web3-builders">web3-builders</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <span className="text-muted-foreground">/</span>
+                        <Input
+                          value={repoName}
+                          onChange={(e) => setRepoName(e.target.value)}
+                          placeholder="dRepository-name"
+                          className="flex-1"
+                          required
+                        />
+                      </div>
+                      {repoName && (
+                        <div className="flex items-center gap-2 text-sm">
+                          <Check className="h-4 w-4 text-green-500" />
+                          <span className="text-muted-foreground">
+                            {owner}/{repoName} is available
+                          </span>
+                        </div>
+                      )}
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="private" id="private" />
-                      <Label htmlFor="private" className="font-normal">
-                        Private - Only you and collaborators can see this repository
-                      </Label>
-                    </div>
-                  </RadioGroup>
-                </div>
 
-                {/* Submit Button */}
-                <div className="flex gap-4 pt-4">
-                  <Button type="submit" disabled={isLoading} className="flex-1">
-                    {isLoading ? 'Creating...' : 'Create Repository'}
-                  </Button>
-                  <Button type="button" variant="outline" asChild>
-                    <Link to="/dashboard">Cancel</Link>
-                  </Button>
-                </div>
-              </form>
-            </CardContent>
-          </Card>
+                    {/* Description */}
+                    <div className="space-y-2">
+                      <Label htmlFor="description">Description (optional)</Label>
+                      <Textarea
+                        id="description"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        placeholder="A brief description of your dRepository"
+                        rows={3}
+                      />
+                    </div>
+
+                    <Separator />
+
+                    {/* Visibility */}
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-2">
+                        <Label className="text-base font-semibold">Visibility</Label>
+                        <Badge variant="secondary" className="text-xs">Choose wisely</Badge>
+                      </div>
+                      <RadioGroup value={visibility} onValueChange={setVisibility}>
+                        <div className="space-y-4">
+                          <div className="flex items-start space-x-3 p-4 border rounded-lg hover:bg-accent/50 transition-colors">
+                            <RadioGroupItem value="public" id="public" className="mt-1" />
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2 mb-2">
+                                <Globe className="h-4 w-4" />
+                                <Label htmlFor="public" className="font-medium cursor-pointer">
+                                  Public
+                                </Label>
+                              </div>
+                              <p className="text-sm text-muted-foreground">
+                                Anyone on the internet can see this dRepository. You choose who can commit.
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex items-start space-x-3 p-4 border rounded-lg hover:bg-accent/50 transition-colors">
+                            <RadioGroupItem value="private" id="private" className="mt-1" />
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2 mb-2">
+                                <Lock className="h-4 w-4" />
+                                <Label htmlFor="private" className="font-medium cursor-pointer">
+                                  Private
+                                </Label>
+                              </div>
+                              <p className="text-sm text-muted-foreground">
+                                You choose who can see and commit to this dRepository.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </RadioGroup>
+                    </div>
+
+                    <Separator />
+
+                    {/* Initialize Repository */}
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-2">
+                        <Label className="text-base font-semibold">Initialize this dRepository with:</Label>
+                        <HelpCircle className="h-4 w-4 text-muted-foreground" />
+                      </div>
+                      
+                      <div className="space-y-3">
+                         <div className="flex items-center space-x-2">
+                           <Checkbox 
+                             id="readme"
+                             checked={initializeReadme}
+                             onCheckedChange={(checked) => setInitializeReadme(checked === true)}
+                           />
+                           <Label htmlFor="readme" className="cursor-pointer">
+                             Add a README file
+                           </Label>
+                         </div>
+                        <p className="text-sm text-muted-foreground ml-6">
+                          This is where you can write a long description for your project.
+                        </p>
+
+                        <div className="space-y-2">
+                          <Label>Add .gitignore</Label>
+                          <Select value={addGitignore} onValueChange={setAddGitignore}>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Choose a .gitignore template" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="">None</SelectItem>
+                              <SelectItem value="Node">Node</SelectItem>
+                              <SelectItem value="Python">Python</SelectItem>
+                              <SelectItem value="Solidity">Solidity</SelectItem>
+                              <SelectItem value="React">React</SelectItem>
+                              <SelectItem value="Rust">Rust</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label>Choose a license</Label>
+                          <Select value={addLicense} onValueChange={setAddLicense}>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Choose a license" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="">None</SelectItem>
+                              <SelectItem value="MIT">MIT License</SelectItem>
+                              <SelectItem value="Apache-2.0">Apache License 2.0</SelectItem>
+                              <SelectItem value="GPL-3.0">GNU General Public License v3.0</SelectItem>
+                              <SelectItem value="BSD-3-Clause">BSD 3-Clause License</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <p className="text-sm text-muted-foreground">
+                            A license tells others what they can and can't do with your code.{' '}
+                            <a href="#" className="text-primary hover:underline">Learn more</a>.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Submit Button */}
+                    <div className="flex gap-4 pt-6">
+                      <Button type="submit" disabled={isLoading} className="btn-primary">
+                        {isLoading ? 'Creating dRepository...' : 'Create dRepository'}
+                      </Button>
+                      <Button type="button" variant="outline" asChild>
+                        <Link to="/dashboard">Cancel</Link>
+                      </Button>
+                    </div>
+                  </form>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Sidebar */}
+            <div className="space-y-6">
+              <Card className="card-elevated">
+                <CardHeader>
+                  <CardTitle className="text-lg">Pro tip!</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4 text-sm">
+                    <div className="flex items-start gap-3">
+                      <Info className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                      <div>
+                        <p className="font-medium">Great dRepository names are short and memorable.</p>
+                        <p className="text-muted-foreground mt-1">
+                          Need inspiration? How about <span className="font-mono bg-muted px-1 rounded">
+                            {owner.split('_')[0]}-dao-contracts</span>?
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="card-elevated">
+                <CardHeader>
+                  <CardTitle className="text-lg">dRepository visibility</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3 text-sm">
+                    <div>
+                      <h4 className="font-medium">Public dRepositories</h4>
+                      <p className="text-muted-foreground">
+                        Accessible to everyone on the internet and indexed by search engines.
+                      </p>
+                    </div>
+                    <div>
+                      <h4 className="font-medium">Private dRepositories</h4>
+                      <p className="text-muted-foreground">
+                        Only accessible to you and people you share it with.
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
         </div>
       </div>
     </div>
