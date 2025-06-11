@@ -16,7 +16,10 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-background web3-gradient">
       {/* Header */}
-      <DashboardHeader />
+      <DashboardHeader 
+        sidebarCollapsed={sidebarCollapsed}
+        onSidebarToggle={toggleSidebar}
+      />
       
       <div className="flex w-full">
         {/* Sidebar */}

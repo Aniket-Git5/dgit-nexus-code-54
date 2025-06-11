@@ -10,9 +10,14 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator 
 } from '@/components/ui/dropdown-menu';
-import { GitBranch, Search, Bell, Plus, ChevronDown, User, Settings, Star, File } from 'lucide-react';
+import { GitBranch, Search, Bell, Plus, ChevronDown, User, Settings, Star, File, Menu } from 'lucide-react';
 
-const DashboardHeader = () => {
+interface HeaderProps {
+  sidebarCollapsed: boolean;
+  onSidebarToggle: () => void;
+}
+
+const DashboardHeader = ({ sidebarCollapsed, onSidebarToggle }: HeaderProps) => {
   const [currentUser] = useState('decentralized_dev');
   const [notificationCount] = useState(3);
 
@@ -20,8 +25,16 @@ const DashboardHeader = () => {
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border web3-shadow">
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
-          {/* Logo */}
+          {/* Left Section - Sidebar Toggle + Logo */}
           <div className="flex items-center gap-3">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={onSidebarToggle}
+              className="hover:bg-accent/50"
+            >
+              <Menu className="h-5 w-5" />
+            </Button>
             <GitBranch className="h-8 w-8 text-primary" />
             <span className="text-2xl font-bold text-foreground purple-glow">dGit</span>
           </div>

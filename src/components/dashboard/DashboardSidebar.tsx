@@ -67,14 +67,6 @@ const DashboardSidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
 
   return (
     <>
-      {/* Overlay for both mobile and desktop */}
-      {!isCollapsed && (
-        <div 
-          className="fixed inset-0 bg-background/80 backdrop-blur-sm z-40"
-          onClick={onToggle}
-        />
-      )}
-      
       {/* Sidebar */}
       <aside className={`
         fixed top-20 left-0 bottom-0 z-50 
@@ -82,11 +74,14 @@ const DashboardSidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
         w-72 bg-card/30 backdrop-blur-md border-r border-border
         transition-transform duration-300 ease-in-out
         web3-shadow
-      `} onClick={(e) => e.stopPropagation()}>
+      `}>
         <div className="flex flex-col h-full">
-          {/* Close button */}
+          {/* Header with dGit logo */}
           <div className="flex items-center justify-between p-4 border-b border-border">
-            <span className="font-semibold text-foreground">Navigation</span>
+            <div className="flex items-center gap-3">
+              <GitBranch className="h-6 w-6 text-primary" />
+              <span className="text-lg font-bold text-foreground purple-glow">dGit</span>
+            </div>
             <Button variant="ghost" size="icon" onClick={onToggle}>
               <X className="h-5 w-5" />
             </Button>
@@ -157,17 +152,6 @@ const DashboardSidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
         </div>
       </aside>
 
-      {/* Toggle menu button - shows when sidebar is collapsed */}
-      {isCollapsed && (
-        <Button
-          variant="outline"
-          size="icon"
-          className="fixed top-24 left-4 z-40 card-elevated"
-          onClick={onToggle}
-        >
-          <Menu className="h-5 w-5" />
-        </Button>
-      )}
     </>
   );
 };
