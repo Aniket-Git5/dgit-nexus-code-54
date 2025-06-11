@@ -1,20 +1,20 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { 
-  Wallet,
+  GitBranch,
   Star,
-  Clock,
+  File,
+  Users,
   Globe,
-  Coins,
-  TrendingUp,
-  Vote,
+  Settings,
   ChevronDown,
   ChevronRight,
-  Activity,
   Menu,
-  X
+  X,
+  Compass,
+  User,
+  Search
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -23,34 +23,36 @@ interface SidebarProps {
 }
 
 const DashboardSidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
-  const [activeSection, setActiveSection] = useState('tokens');
-  const [openSections, setOpenSections] = useState(['assets', 'activity']);
+  const [activeSection, setActiveSection] = useState('repositories');
+  const [openSections, setOpenSections] = useState(['your-dgit', 'explore']);
 
   const menuItems = [
     {
-      id: 'assets',
-      title: 'My Assets',
+      id: 'your-dgit',
+      title: 'Your dGit Spaces',
       items: [
-        { id: 'tokens', icon: Coins, label: 'My Tokens', count: 12 },
-        { id: 'nfts', icon: Star, label: 'My NFTs', count: 8 },
-        { id: 'transactions', icon: Clock, label: 'Transactions', count: null }
+        { id: 'repositories', icon: GitBranch, label: 'dRepositories', href: '/repositories' },
+        { id: 'organizations', icon: Users, label: 'dOrganizations', href: '/organizations' },
+        { id: 'projects', icon: File, label: 'dProjects', href: '/projects' },
+        { id: 'starred', icon: Star, label: 'Starred dRepos', href: '/starred' },
+        { id: 'gists', icon: File, label: 'dGists', href: '/gists' }
       ]
     },
     {
-      id: 'protocols',
-      title: 'Protocols',
+      id: 'explore',
+      title: 'Explore dGit',
       items: [
-        { id: 'dapps', icon: Globe, label: 'My dApps', count: 5 },
-        { id: 'staking', icon: TrendingUp, label: 'Staking', count: 3 },
-        { id: 'governance', icon: Vote, label: 'DAO Governance', count: 2 }
+        { id: 'explore-repos', icon: Compass, label: 'Explore', href: '/explore' },
+        { id: 'marketplace', icon: Globe, label: 'Marketplace', href: '/marketplace' },
+        { id: 'topics', icon: Search, label: 'Topics', href: '/topics' }
       ]
     },
     {
-      id: 'activity',
-      title: 'Activity',
+      id: 'settings-help',
+      title: 'Settings & Help',
       items: [
-        { id: 'recent', icon: Activity, label: 'Recent Activity', count: null },
-        { id: 'explore', icon: Globe, label: 'Explore dApps', count: null }
+        { id: 'settings', icon: Settings, label: 'Settings', href: '/settings' },
+        { id: 'help', icon: File, label: 'Help', href: '/help' }
       ]
     }
   ];
@@ -128,11 +130,6 @@ const DashboardSidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
                       >
                         <item.icon className="h-4 w-4 mr-3" />
                         <span className="flex-1 text-left">{item.label}</span>
-                        {item.count && (
-                          <Badge variant="secondary" className="ml-auto">
-                            {item.count}
-                          </Badge>
-                        )}
                       </Button>
                     ))}
                   </CollapsibleContent>
@@ -141,12 +138,21 @@ const DashboardSidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
             ))}
           </div>
 
-          {/* Bottom section - maybe add user stats or quick actions */}
+          {/* Bottom section - User quick stats */}
           <div className="p-4 border-t border-border">
-            <div className="card-elevated p-3 text-center">
-              <div className="text-sm text-muted-foreground mb-1">Total Portfolio Value</div>
-              <div className="text-lg font-bold text-foreground">$12,345.67</div>
-              <div className="text-xs text-green-500">+2.34% (24h)</div>
+            <div className="card-elevated p-3 space-y-2">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-muted-foreground">dRepositories</span>
+                <span className="font-medium text-foreground">12</span>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-muted-foreground">Stars received</span>
+                <span className="font-medium text-foreground">34</span>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-muted-foreground">Following</span>
+                <span className="font-medium text-foreground">89</span>
+              </div>
             </div>
           </div>
         </div>

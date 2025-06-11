@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { TrendingUp, Clock, Vote, ArrowRight } from 'lucide-react';
+import { GitBranch, Star, Users, ArrowRight, Plus, Compass } from 'lucide-react';
 
 const WelcomeBanner = () => {
   return (
@@ -12,27 +12,27 @@ const WelcomeBanner = () => {
           <div className="space-y-4">
             <div>
               <h1 className="text-2xl lg:text-3xl font-bold text-foreground mb-2">
-                Welcome back, <span className="text-primary">0xAbc...Xyz</span>
+                Welcome back, <span className="text-primary">@decentralized_dev</span>
               </h1>
               <p className="text-muted-foreground">
-                Here's what's happening with your Web3 portfolio today.
+                Here's what's happening in your dGit network today.
               </p>
             </div>
 
             {/* Quick Stats */}
             <div className="flex flex-wrap gap-4">
               <div className="flex items-center gap-2 card-elevated px-3 py-2">
-                <Clock className="h-4 w-4 text-primary" />
-                <span className="text-sm text-foreground">2 pending transactions</span>
+                <GitBranch className="h-4 w-4 text-primary" />
+                <span className="text-sm text-foreground">12 dRepositories</span>
               </div>
               <div className="flex items-center gap-2 card-elevated px-3 py-2">
-                <TrendingUp className="h-4 w-4 text-green-500" />
-                <span className="text-sm text-foreground">3 active stakes</span>
+                <Star className="h-4 w-4 text-yellow-500" />
+                <span className="text-sm text-foreground">891 stars received</span>
               </div>
               <div className="flex items-center gap-2 card-elevated px-3 py-2">
-                <Vote className="h-4 w-4 text-blue-500" />
-                <span className="text-sm text-foreground">1 new proposal</span>
-                <Badge className="ml-1 bg-cta text-cta-foreground">New</Badge>
+                <Users className="h-4 w-4 text-blue-500" />
+                <span className="text-sm text-foreground">45 followers</span>
+                <Badge className="ml-1 bg-cta text-cta-foreground">+3</Badge>
               </div>
             </div>
           </div>
@@ -40,11 +40,13 @@ const WelcomeBanner = () => {
           {/* CTA Section */}
           <div className="flex flex-col sm:flex-row gap-3">
             <Button className="btn-primary flex items-center gap-2">
-              Start Transaction
+              <Plus className="h-4 w-4" />
+              New dRepository
               <ArrowRight className="h-4 w-4" />
             </Button>
-            <Button variant="outline" className="card-elevated">
-              Explore dApps
+            <Button variant="outline" className="card-elevated flex items-center gap-2">
+              <Compass className="h-4 w-4" />
+              Explore dGit
             </Button>
           </div>
         </div>

@@ -2,10 +2,9 @@ import { useState } from 'react';
 import DashboardHeader from '@/components/dashboard/DashboardHeader';
 import DashboardSidebar from '@/components/dashboard/DashboardSidebar';
 import WelcomeBanner from '@/components/dashboard/WelcomeBanner';
-import ActivityOverview from '@/components/dashboard/ActivityOverview';
-import PinnedItems from '@/components/dashboard/PinnedItems';
-import RecentActivity from '@/components/dashboard/RecentActivity';
-import DiscoverSection from '@/components/dashboard/DiscoverSection';
+import ActivityFeed from '@/components/dashboard/ActivityFeed';
+import RepoQuickAccess from '@/components/dashboard/RepoQuickAccess';
+import DiscoverRecommendations from '@/components/dashboard/DiscoverRecommendations';
 
 const Dashboard = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
@@ -35,24 +34,19 @@ const Dashboard = () => {
             {/* Welcome Section */}
             <WelcomeBanner />
             
-            {/* Activity Overview */}
-            <ActivityOverview />
-            
-            {/* Two Column Layout */}
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
-              {/* Left Column */}
-              <div className="space-y-8">
-                <PinnedItems />
+            {/* Main Dashboard Layout */}
+            <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+              {/* Left Column - Activity Feed */}
+              <div className="xl:col-span-2">
+                <ActivityFeed />
               </div>
               
-              {/* Right Column */}
+              {/* Right Column - Quick Access & Recommendations */}
               <div className="space-y-8">
-                <RecentActivity />
+                <RepoQuickAccess />
+                <DiscoverRecommendations />
               </div>
             </div>
-            
-            {/* Discover Section */}
-            <DiscoverSection />
           </div>
         </main>
       </div>
