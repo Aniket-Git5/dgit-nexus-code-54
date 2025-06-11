@@ -12,8 +12,6 @@ import {
   Settings,
   ChevronDown,
   ChevronRight,
-  Menu,
-  X,
   Compass,
   User,
   Search,
@@ -82,27 +80,8 @@ const DashboardSidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
   };
 
   return (
-    <>
-      {/* Sidebar */}
-      <aside className={`
-        fixed top-20 left-0 bottom-0 z-50 
-        ${isCollapsed ? '-translate-x-full' : 'translate-x-0'}
-        w-72 bg-card/30 backdrop-blur-md border-r border-border
-        transition-transform duration-300 ease-in-out
-        web3-shadow
-      `}>
+    <aside className="h-full bg-card/30 backdrop-blur-md web3-shadow"  >
         <div className="flex flex-col h-full">
-          {/* Header with dGit logo */}
-          <div className="flex items-center justify-between p-4 border-b border-border">
-            <div className="flex items-center gap-3">
-              <GitBranch className="h-6 w-6 text-primary" />
-              <span className="text-lg font-bold text-foreground purple-glow">dGit</span>
-            </div>
-            <Button variant="ghost" size="icon" onClick={onToggle}>
-              <X className="h-5 w-5" />
-            </Button>
-          </div>
-
           {/* User Profile Section */}
           <div className="p-4 border-b border-border">
             <div className="flex items-center gap-3">
@@ -241,9 +220,7 @@ const DashboardSidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
             </div>
           </div>
         </div>
-      </aside>
-
-    </>
+    </aside>
   );
 };
 

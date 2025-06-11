@@ -11,13 +11,10 @@ import {
   DropdownMenuSeparator 
 } from '@/components/ui/dropdown-menu';
 import { GitBranch, Search, Bell, Plus, ChevronDown, User, Settings, Star, File, Menu } from 'lucide-react';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import DashboardSidebar from './DashboardSidebar';
 
-interface HeaderProps {
-  sidebarCollapsed: boolean;
-  onSidebarToggle: () => void;
-}
-
-const DashboardHeader = ({ sidebarCollapsed, onSidebarToggle }: HeaderProps) => {
+const DashboardHeader = () => {
   const [currentUser] = useState('decentralized_dev');
   const [notificationCount] = useState(3);
 
@@ -27,14 +24,20 @@ const DashboardHeader = ({ sidebarCollapsed, onSidebarToggle }: HeaderProps) => 
         <div className="flex items-center justify-between">
           {/* Left Section - Sidebar Toggle + Logo */}
           <div className="flex items-center gap-3">
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              onClick={onSidebarToggle}
-              className="hover:bg-accent/50"
-            >
-              <Menu className="h-5 w-5" />
-            </Button>
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="hover:bg-accent/50"
+                >
+                  <Menu className="h-5 w-5" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="w-72 p-0">
+                <DashboardSidebar isCollapsed={false} onToggle={() => {}} />
+              </SheetContent>
+            </Sheet>
             <GitBranch className="h-8 w-8 text-primary" />
             <span className="text-2xl font-bold text-foreground purple-glow">dGit</span>
           </div>
