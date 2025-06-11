@@ -20,8 +20,8 @@ const CreateRepository = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [owner, setOwner] = useState('decentralized_dev');
   const [initializeReadme, setInitializeReadme] = useState(true);
-  const [addGitignore, setAddGitignore] = useState('');
-  const [addLicense, setAddLicense] = useState('');
+  const [addGitignore, setAddGitignore] = useState('none');
+  const [addLicense, setAddLicense] = useState('none');
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -203,7 +203,7 @@ const CreateRepository = () => {
                               <SelectValue placeholder="Choose a .gitignore template" />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="">None</SelectItem>
+                              <SelectItem value="none">None</SelectItem>
                               <SelectItem value="Node">Node</SelectItem>
                               <SelectItem value="Python">Python</SelectItem>
                               <SelectItem value="Solidity">Solidity</SelectItem>
@@ -220,7 +220,7 @@ const CreateRepository = () => {
                               <SelectValue placeholder="Choose a license" />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="">None</SelectItem>
+                              <SelectItem value="none">None</SelectItem>
                               <SelectItem value="MIT">MIT License</SelectItem>
                               <SelectItem value="Apache-2.0">Apache License 2.0</SelectItem>
                               <SelectItem value="GPL-3.0">GNU General Public License v3.0</SelectItem>
