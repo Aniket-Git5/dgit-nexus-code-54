@@ -116,23 +116,23 @@ const ActivityFeed = () => {
         </div>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
+        <div className="space-y-4 w-full overflow-hidden">
           {activities.map((activity) => (
-            <div key={activity.id} className="card-interactive p-4 group">
-              <div className="flex items-start gap-3">
-                <Avatar className="h-8 w-8">
+            <div key={activity.id} className="card-interactive p-4 group w-full overflow-hidden">
+              <div className="flex items-start gap-3 w-full overflow-hidden">
+                <Avatar className="h-8 w-8 shrink-0">
                   <AvatarImage src={activity.avatar} alt={activity.user} />
                   <AvatarFallback className="text-xs bg-primary/10">
                     {activity.user.slice(0, 2).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
                 
-                <div className="flex-1 space-y-2">
-                  <div className="flex items-center gap-2">
+                <div className="flex-1 space-y-2 min-w-0 overflow-hidden">
+                  <div className="flex items-start gap-2 flex-wrap">
                     {getActivityIcon(activity.type)}
-                    <span className="text-sm text-foreground">
+                    <span className="text-sm text-foreground min-w-0 break-words">
                       <span className="font-medium">{activity.user}</span> {activity.action}{' '}
-                      <span className="font-medium text-primary">{activity.target}</span>
+                      <span className="font-medium text-primary break-all">{activity.target}</span>
                       {activity.branch && (
                         <span className="text-muted-foreground"> on {activity.branch}</span>
                       )}
@@ -140,15 +140,15 @@ const ActivityFeed = () => {
                   </div>
                   
                   {activity.details && (
-                    <p className="text-sm text-muted-foreground pl-6">
+                    <p className="text-sm text-muted-foreground pl-6 break-words">
                       {activity.details}
                     </p>
                   )}
                   
-                  <div className="flex items-center justify-between pl-6">
-                    <div className="flex items-center gap-2">
+                  <div className="flex items-center justify-between pl-6 flex-wrap gap-2">
+                    <div className="flex items-center gap-2 flex-wrap">
                       {getActivityBadge(activity.type)}
-                      <span className="text-xs text-muted-foreground flex items-center gap-1">
+                      <span className="text-xs text-muted-foreground flex items-center gap-1 whitespace-nowrap">
                         <Clock className="h-3 w-3" />
                         {activity.timestamp}
                       </span>

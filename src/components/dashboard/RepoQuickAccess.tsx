@@ -89,21 +89,21 @@ const RepoQuickAccess = () => {
         </div>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
+        <div className="space-y-4 w-full overflow-hidden">
           {repositories.slice(0, 3).map((repo) => (
-            <div key={repo.id} className="card-interactive p-4 group">
-              <div className="flex items-start justify-between">
-                <div className="flex-1 space-y-2">
-                  <div className="flex items-center gap-2">
-                    <h4 className="font-semibold text-foreground hover:text-primary cursor-pointer">
+            <div key={repo.id} className="card-interactive p-4 group w-full overflow-hidden">
+              <div className="flex items-start justify-between gap-3 w-full overflow-hidden">
+                <div className="flex-1 space-y-2 min-w-0 overflow-hidden">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h4 className="font-semibold text-foreground hover:text-primary cursor-pointer break-all min-w-0">
                       {repo.owner}/{repo.name}
                     </h4>
                     {repo.isPinned && (
-                      <Badge variant="secondary" className="bg-yellow-500/10 text-yellow-500 text-xs">
+                      <Badge variant="secondary" className="bg-yellow-500/10 text-yellow-500 text-xs shrink-0">
                         Pinned
                       </Badge>
                     )}
-                    <Badge variant="secondary" className="text-xs flex items-center gap-1">
+                    <Badge variant="secondary" className="text-xs flex items-center gap-1 shrink-0">
                       {repo.visibility === 'public' ? (
                         <>
                           <Globe className="h-3 w-3" />
@@ -118,20 +118,20 @@ const RepoQuickAccess = () => {
                     </Badge>
                   </div>
                   
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-muted-foreground break-words">
                     {repo.description}
                   </p>
                   
-                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                    <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-4 text-sm text-muted-foreground flex-wrap">
+                    <div className="flex items-center gap-1 whitespace-nowrap">
                       <div className={`w-3 h-3 rounded-full ${getLanguageColor(repo.language)}`}></div>
                       <span>{repo.language}</span>
                     </div>
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-1 whitespace-nowrap">
                       <Star className="h-3 w-3" />
                       <span>{repo.stars}</span>
                     </div>
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-1 whitespace-nowrap">
                       <Clock className="h-3 w-3" />
                       <span>Updated {repo.lastUpdated}</span>
                     </div>
@@ -141,7 +141,7 @@ const RepoQuickAccess = () => {
                 <Button 
                   variant="ghost" 
                   size="sm" 
-                  className="opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="opacity-0 group-hover:opacity-100 transition-opacity shrink-0"
                 >
                   <Eye className="h-4 w-4" />
                 </Button>
