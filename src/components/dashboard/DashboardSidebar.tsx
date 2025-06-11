@@ -80,7 +80,7 @@ const DashboardSidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
   };
 
   return (
-    <aside className="h-full bg-card/30 backdrop-blur-md web3-shadow"  >
+    <aside className="h-full bg-card/30 backdrop-blur-md web3-shadow">
         <div className="flex flex-col h-full">
           {/* User Profile Section */}
           <div className="p-4 border-b border-border">
