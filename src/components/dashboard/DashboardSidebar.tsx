@@ -67,10 +67,10 @@ const DashboardSidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
 
   return (
     <>
-      {/* Mobile overlay */}
+      {/* Overlay for both mobile and desktop */}
       {!isCollapsed && (
         <div 
-          className="fixed inset-0 bg-background/80 backdrop-blur-sm z-40 lg:hidden"
+          className="fixed inset-0 bg-background/80 backdrop-blur-sm z-40"
           onClick={onToggle}
         />
       )}
@@ -79,14 +79,13 @@ const DashboardSidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
       <aside className={`
         fixed top-20 left-0 bottom-0 z-50 
         ${isCollapsed ? '-translate-x-full' : 'translate-x-0'}
-        lg:translate-x-0 lg:static lg:top-0
         w-72 bg-card/30 backdrop-blur-md border-r border-border
         transition-transform duration-300 ease-in-out
         web3-shadow
-      `}>
+      `} onClick={(e) => e.stopPropagation()}>
         <div className="flex flex-col h-full">
-          {/* Mobile close button */}
-          <div className="flex items-center justify-between p-4 border-b border-border lg:hidden">
+          {/* Close button */}
+          <div className="flex items-center justify-between p-4 border-b border-border">
             <span className="font-semibold text-foreground">Navigation</span>
             <Button variant="ghost" size="icon" onClick={onToggle}>
               <X className="h-5 w-5" />
@@ -158,15 +157,17 @@ const DashboardSidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
         </div>
       </aside>
 
-      {/* Mobile menu button */}
-      <Button
-        variant="outline"
-        size="icon"
-        className="fixed top-24 left-4 z-40 lg:hidden card-elevated"
-        onClick={onToggle}
-      >
-        <Menu className="h-5 w-5" />
-      </Button>
+      {/* Toggle menu button - shows when sidebar is collapsed */}
+      {isCollapsed && (
+        <Button
+          variant="outline"
+          size="icon"
+          className="fixed top-24 left-4 z-40 card-elevated"
+          onClick={onToggle}
+        >
+          <Menu className="h-5 w-5" />
+        </Button>
+      )}
     </>
   );
 };
