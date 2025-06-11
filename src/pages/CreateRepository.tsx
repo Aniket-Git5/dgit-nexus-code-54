@@ -54,43 +54,43 @@ const CreateRepository = () => {
     <div className="min-h-screen bg-background">
       {/* Top Navigation Bar */}
       <nav className="border-b bg-card">
-        <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <GitBranch className="h-6 w-6 text-primary" />
-            <Link to="/dashboard" className="text-xl font-bold text-foreground hover:text-primary">
+        <div className="container mx-auto px-4 py-3 flex items-center justify-between max-w-full">
+          <div className="flex items-center gap-2 min-w-0">
+            <GitBranch className="h-6 w-6 text-primary flex-shrink-0" />
+            <Link to="/dashboard" className="text-lg sm:text-xl font-bold text-foreground hover:text-primary truncate">
               dGit
             </Link>
           </div>
           
-          <Link to="/dashboard" className="text-sm text-muted-foreground hover:text-foreground">
+          <Link to="/dashboard" className="text-xs sm:text-sm text-muted-foreground hover:text-foreground whitespace-nowrap">
             Back to Dashboard
           </Link>
         </div>
       </nav>
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
+      <div className="container mx-auto px-4 py-8 max-w-full overflow-hidden">
+        <div className="max-w-7xl mx-auto">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-foreground mb-2">Create a new dRepository</h1>
-            <p className="text-muted-foreground">
+            <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-2 break-words">Create a new dRepository</h1>
+            <p className="text-muted-foreground text-sm md:text-base break-words">
               A dRepository contains all project files, including the revision history. Already have a project dRepository elsewhere?{' '}
               <a href="#" className="text-primary hover:underline">Import a dRepository</a>.
             </p>
           </div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-8 w-full">
             {/* Main Form */}
-            <div className="lg:col-span-2">
-              <Card className="card-elevated">
-                <CardContent className="p-6">
-                  <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="lg:col-span-2 w-full min-w-0">
+              <Card className="card-elevated w-full">
+                <CardContent className="p-4 sm:p-6">
+                  <form onSubmit={handleSubmit} className="space-y-6 w-full">
                     {/* Owner / Repository name */}
                     <div className="space-y-2">
                       <Label>Owner / dRepository name *</Label>
-                      <div className="flex items-center space-x-2">
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-2 w-full">
                         <Select value={owner} onValueChange={setOwner}>
-                          <SelectTrigger className="w-48">
+                          <SelectTrigger className="w-full sm:w-48 min-w-0">
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
@@ -99,19 +99,19 @@ const CreateRepository = () => {
                             <SelectItem value="web3-builders">web3-builders</SelectItem>
                           </SelectContent>
                         </Select>
-                        <span className="text-muted-foreground">/</span>
+                        <span className="text-muted-foreground text-center sm:text-left">/</span>
                         <Input
                           value={repoName}
                           onChange={(e) => setRepoName(e.target.value)}
                           placeholder="dRepository-name"
-                          className="flex-1"
+                          className="flex-1 min-w-0"
                           required
                         />
                       </div>
                       {repoName && (
-                        <div className="flex items-center gap-2 text-sm">
-                          <Check className="h-4 w-4 text-green-500" />
-                          <span className="text-muted-foreground">
+                        <div className="flex items-center gap-2 text-sm break-all">
+                          <Check className="h-4 w-4 text-green-500 flex-shrink-0" />
+                          <span className="text-muted-foreground break-all">
                             {owner}/{repoName} is available
                           </span>
                         </div>
@@ -236,11 +236,11 @@ const CreateRepository = () => {
                     </div>
 
                     {/* Submit Button */}
-                    <div className="flex gap-4 pt-6">
-                      <Button type="submit" disabled={isLoading} className="btn-primary">
+                    <div className="flex flex-col sm:flex-row gap-3 pt-6 w-full">
+                      <Button type="submit" disabled={isLoading} className="btn-primary flex-1 sm:flex-none whitespace-nowrap">
                         {isLoading ? 'Creating dRepository...' : 'Create dRepository'}
                       </Button>
-                      <Button type="button" variant="outline" asChild>
+                      <Button type="button" variant="outline" asChild className="flex-1 sm:flex-none">
                         <Link to="/dashboard">Cancel</Link>
                       </Button>
                     </div>
@@ -250,19 +250,19 @@ const CreateRepository = () => {
             </div>
 
             {/* Sidebar */}
-            <div className="space-y-6">
-              <Card className="card-elevated">
-                <CardHeader>
-                  <CardTitle className="text-lg">Pro tip!</CardTitle>
+            <div className="space-y-6 w-full min-w-0">
+              <Card className="card-elevated w-full">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-lg break-words">Pro tip!</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="pt-0">
                   <div className="space-y-4 text-sm">
                     <div className="flex items-start gap-3">
                       <Info className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
-                      <div>
-                        <p className="font-medium">Great dRepository names are short and memorable.</p>
-                        <p className="text-muted-foreground mt-1">
-                          Need inspiration? How about <span className="font-mono bg-muted px-1 rounded">
+                      <div className="min-w-0 flex-1">
+                        <p className="font-medium break-words">Great dRepository names are short and memorable.</p>
+                        <p className="text-muted-foreground mt-1 break-words">
+                          Need inspiration? How about <span className="font-mono bg-muted px-1 rounded break-all">
                             {owner.split('_')[0]}-dao-contracts</span>?
                         </p>
                       </div>
@@ -271,21 +271,21 @@ const CreateRepository = () => {
                 </CardContent>
               </Card>
 
-              <Card className="card-elevated">
-                <CardHeader>
-                  <CardTitle className="text-lg">dRepository visibility</CardTitle>
+              <Card className="card-elevated w-full">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-lg break-words">dRepository visibility</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="pt-0">
                   <div className="space-y-3 text-sm">
                     <div>
-                      <h4 className="font-medium">Public dRepositories</h4>
-                      <p className="text-muted-foreground">
+                      <h4 className="font-medium break-words">Public dRepositories</h4>
+                      <p className="text-muted-foreground break-words">
                         Accessible to everyone on the internet and indexed by search engines.
                       </p>
                     </div>
                     <div>
-                      <h4 className="font-medium">Private dRepositories</h4>
-                      <p className="text-muted-foreground">
+                      <h4 className="font-medium break-words">Private dRepositories</h4>
+                      <p className="text-muted-foreground break-words">
                         Only accessible to you and people you share it with.
                       </p>
                     </div>
