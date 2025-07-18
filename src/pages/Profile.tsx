@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -9,20 +9,72 @@ import { GitBranch } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 
+interface UserProfile {
+  username: string;
+  bio: string;
+  avatar?: string;
+  principalId?: string;
+}
+
 const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
-  const [handle, setHandle] = useState('username');
-  const [bio, setBio] = useState('Passionate developer working on decentralized technologies and building the future of code collaboration.');
-  const [tempHandle, setTempHandle] = useState(handle);
-  const [tempBio, setTempBio] = useState(bio);
+  const [isLoading, setIsLoading] = useState(true);
+  const [profile, setProfile] = useState<UserProfile>({
+    username: '',
+    bio: '',
+    avatar: '',
+    principalId: ''
+  });
+  const [tempProfile, setTempProfile] = useState<UserProfile>(profile);
   const { toast } = useToast();
 
-  // Mock principal ID
-  const principalId = 'rdmx6-jaaaa-aaaah-qcaaw-cai-example-principal-id';
+  useEffect(() => {
+    // TODO: Replace with real-time Supabase query
+    // const fetchProfile = async () => {
+    //   const { data: user } = await supabase.auth.getUser();
+    //   if (user.user) {
+    //     const { data } = await supabase
+    //       .from('profiles')
+    //       .select('username, bio, avatar_url, principal_id')
+    //       .eq('id', user.user.id)
+    //       .single();
+    //     
+    //     const profileData = {
+    //       username: data?.username || '',
+    //       bio: data?.bio || '',
+    //       avatar: data?.avatar_url || '',
+    //       principalId: data?.principal_id || ''
+    //     };
+    //     setProfile(profileData);
+    //     setTempProfile(profileData);
+    //   }
+    // };
+    // fetchProfile();
+    setIsLoading(false);
+  }, []);
 
-  const handleSave = () => {
-    setHandle(tempHandle);
-    setBio(tempBio);
+  const handleSave = async () => {
+    // TODO: Replace with real Supabase update
+    // const { data: user } = await supabase.auth.getUser();
+    // if (user.user) {
+    //   const { error } = await supabase
+    //     .from('profiles')
+    //     .update({
+    //       username: tempProfile.username,
+    //       bio: tempProfile.bio
+    //     })
+    //     .eq('id', user.user.id);
+    //   
+    //   if (!error) {
+    //     setProfile(tempProfile);
+    //     setIsEditing(false);
+    //     toast({
+    //       title: "Success",
+    //       description: "Profile updated successfully!"
+    //     });
+    //   }
+    // }
+    setProfile(tempProfile);
     setIsEditing(false);
     toast({
       title: "Success",
@@ -31,8 +83,7 @@ const Profile = () => {
   };
 
   const handleCancel = () => {
-    setTempHandle(handle);
-    setTempBio(bio);
+    setTempProfile(profile);
     setIsEditing(false);
   };
 
@@ -74,8 +125,8 @@ const Profile = () => {
               {/* Avatar and Handle */}
               <div className="flex items-center gap-4">
                 <Avatar className="h-20 w-20">
-                  <AvatarImage src="/placeholder-user.jpg" alt="User" />
-                  <AvatarFallback className="text-lg">{handle.charAt(0).toUpperCase()}</AvatarFallback>
+                  <AvatarImage src={profile.avatar} alt="User" />
+                  <AvatarFallback className="text-lg">{profile.username.charAt(0).toUpperCase()}</AvatarFallback>
                 </Avatar>
                 <div className="flex-1">
                   {isEditing ? (
@@ -85,15 +136,15 @@ const Profile = () => {
                         <span className="text-muted-foreground mr-1">@</span>
                         <Input
                           id="handle"
-                          value={tempHandle}
-                          onChange={(e) => setTempHandle(e.target.value)}
+                          value={tempProfile.username}
+                          onChange={(e) => setTempProfile(prev => ({ ...prev, username: e.target.value }))}
                           className="flex-1"
                         />
                       </div>
                     </div>
                   ) : (
                     <div>
-                      <h2 className="text-2xl font-bold text-foreground">@{handle}</h2>
+                      <h2 className="text-2xl font-bold text-foreground">@{profile.username}</h2>
                       <p className="text-sm text-muted-foreground">User Handle</p>
                     </div>
                   )}
@@ -104,7 +155,7 @@ const Profile = () => {
               <div className="space-y-2">
                 <Label>Principal ID</Label>
                 <div className="p-3 bg-muted rounded-md">
-                  <code className="text-sm font-mono break-all">{principalId}</code>
+                  <code className="text-sm font-mono break-all">{profile.principalId || 'Not connected'}</code>
                 </div>
                 <p className="text-xs text-muted-foreground">
                   This is your unique identifier on the Internet Computer network
@@ -117,14 +168,14 @@ const Profile = () => {
                 {isEditing ? (
                   <Textarea
                     id="bio"
-                    value={tempBio}
-                    onChange={(e) => setTempBio(e.target.value)}
+                    value={tempProfile.bio}
+                    onChange={(e) => setTempProfile(prev => ({ ...prev, bio: e.target.value }))}
                     rows={4}
                     placeholder="Tell us about yourself..."
                   />
                 ) : (
                   <div className="p-3 bg-muted rounded-md min-h-[100px]">
-                    <p className="text-sm">{bio || 'No bio provided'}</p>
+                    <p className="text-sm">{profile.bio || 'No bio provided'}</p>
                   </div>
                 )}
               </div>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -15,9 +15,53 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Link } from 'react-router-dom';
 import DashboardSidebar from './DashboardSidebar';
 
+interface UserProfile {
+  username: string;
+  avatar?: string;
+}
+
 const DashboardHeader = () => {
-  const [currentUser] = useState('decentralized_dev');
-  const [notificationCount] = useState(3);
+  const [currentUser, setCurrentUser] = useState<UserProfile>({ username: '' });
+  const [notificationCount, setNotificationCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // TODO: Replace with real-time Supabase queries
+    // const fetchUserProfile = async () => {
+    //   const { data: user } = await supabase.auth.getUser();
+    //   if (user.user) {
+    //     const { data: profile } = await supabase
+    //       .from('profiles')
+    //       .select('username, avatar_url')
+    //       .eq('id', user.user.id)
+    //       .single();
+    //     
+    //     setCurrentUser({
+    //       username: profile?.username || 'user',
+    //       avatar: profile?.avatar_url
+    //     });
+    //   }
+    // };
+    
+    // const fetchNotifications = async () => {
+    //   const { data } = await supabase
+    //     .from('notifications')
+    //     .select('id')
+    //     .eq('user_id', user.user.id)
+    //     .eq('read', false);
+    //   
+    //   setNotificationCount(data?.length || 0);
+    // };
+    
+    // fetchUserProfile();
+    // fetchNotifications();
+    setIsLoading(false);
+  }, []);
+
+  const handleSignOut = async () => {
+    // TODO: Implement sign out with Supabase
+    // await supabase.auth.signOut();
+  };
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border web3-shadow">
@@ -100,11 +144,12 @@ const DashboardHeader = () => {
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" className="card-elevated flex items-center gap-2 hover:border-primary/30">
                   <Avatar className="h-6 w-6">
+                    <AvatarImage src={currentUser.avatar} alt={currentUser.username} />
                     <AvatarFallback className="text-xs bg-primary/10">
-                      {currentUser.slice(0, 2).toUpperCase()}
+                      {currentUser.username ? currentUser.username.slice(0, 2).toUpperCase() : 'U'}
                     </AvatarFallback>
                   </Avatar>
-                  <span className="hidden sm:inline text-sm">{currentUser}</span>
+                  <span className="hidden sm:inline text-sm">{currentUser.username}</span>
                   <ChevronDown className="h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
