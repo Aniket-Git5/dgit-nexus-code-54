@@ -48,11 +48,11 @@ const InteractiveEntryPage = () => {
   const handleInternetIdentityLogin = () => {
     setIsLoading(true);
     
-    // Open Internet Identity in a new window
-    const internetIdentityUrl = 'https://identity.ic0.app/';
-    const loginWindow = window.open(internetIdentityUrl, 'internetIdentityLogin', 'width=500,height=600');
+    // Redirect to Internet Identity in the same page
+    window.location.href = 'https://identity.ic0.app/';
     
-    // Simulate authentication check - in real implementation, this would be handled by Internet Identity
+    // Note: In real implementation, Internet Identity will handle the redirect back
+    // For now, we'll simulate the flow with a timeout
     setTimeout(() => {
       setIsLoading(false);
       
@@ -67,12 +67,7 @@ const InteractiveEntryPage = () => {
         // User doesn't have account, show create account form
         setShowCreateAccount(true);
       }
-      
-      // Close the login window
-      if (loginWindow) {
-        loginWindow.close();
-      }
-    }, 3000);
+    }, 100); // Short timeout for demo purposes
   };
 
   const handleCreateAccount = () => {
