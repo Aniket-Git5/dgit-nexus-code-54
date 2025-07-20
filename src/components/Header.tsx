@@ -50,6 +50,13 @@ const Header = () => {
         </nav>
         
         <div className="flex items-center gap-4">
+          <Button 
+            variant="ghost" 
+            className="hidden md:inline-flex" 
+            onClick={() => window.location.href = 'https://identity.ic0.app/'}
+          >
+            Log In
+          </Button>
           <Button className="btn-primary">
             Get Early Access
           </Button>
