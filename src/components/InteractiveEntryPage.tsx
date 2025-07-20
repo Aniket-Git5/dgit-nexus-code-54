@@ -48,16 +48,15 @@ const InteractiveEntryPage = () => {
   const handleInternetIdentityLogin = () => {
     setIsLoading(true);
     
-    // Redirect to Internet Identity in the same page
-    window.location.href = 'https://identity.ic0.app/';
+    // Open Internet Identity in a new tab to avoid CORS restrictions
+    const internetIdentityWindow = window.open('https://identity.ic0.app/', '_blank', 'noopener,noreferrer');
     
-    // Note: In real implementation, Internet Identity will handle the redirect back
-    // For now, we'll simulate the flow with a timeout
+    // Simulate authentication flow - in real implementation, Internet Identity would postMessage back
     setTimeout(() => {
       setIsLoading(false);
       
-      // Simulate checking if user has existing account
-      const hasExistingAccount = Math.random() > 0.5; // Random for demo
+      // For demo purposes, ask user about existing account
+      const hasExistingAccount = confirm('Do you have an existing Internet Identity account?\n\nClick OK for YES, Cancel for NO');
       
       if (hasExistingAccount) {
         // User has existing account, redirect to dashboard
@@ -67,7 +66,12 @@ const InteractiveEntryPage = () => {
         // User doesn't have account, show create account form
         setShowCreateAccount(true);
       }
-    }, 100); // Short timeout for demo purposes
+      
+      // Close the Internet Identity window if it's still open
+      if (internetIdentityWindow && !internetIdentityWindow.closed) {
+        internetIdentityWindow.close();
+      }
+    }, 2000);
   };
 
   const handleCreateAccount = () => {
