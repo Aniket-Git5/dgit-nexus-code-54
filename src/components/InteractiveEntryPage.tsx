@@ -1,12 +1,19 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { Button } from "@/components/ui/button";
-import { GitBranch, Infinity } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { GitBranch, Infinity, User, Mail } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const InteractiveEntryPage = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [showCreateAccount, setShowCreateAccount] = useState(false);
+  const [formData, setFormData] = useState({ name: '', email: '', username: '' });
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const entryRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -38,15 +45,49 @@ const InteractiveEntryPage = () => {
     }
   }, []);
 
-  const handleSignUp = () => {
+  const handleInternetIdentityLogin = () => {
     setIsLoading(true);
     
-    // Simulate the process and then set the flag
+    // Open Internet Identity in a new window
+    const internetIdentityUrl = 'https://identity.ic0.app/';
+    const loginWindow = window.open(internetIdentityUrl, 'internetIdentityLogin', 'width=500,height=600');
+    
+    // Simulate authentication check - in real implementation, this would be handled by Internet Identity
+    setTimeout(() => {
+      setIsLoading(false);
+      
+      // Simulate checking if user has existing account
+      const hasExistingAccount = Math.random() > 0.5; // Random for demo
+      
+      if (hasExistingAccount) {
+        // User has existing account, redirect to dashboard
+        localStorage.setItem('hasVisitedLandingPage', 'true');
+        navigate('/dashboard');
+      } else {
+        // User doesn't have account, show create account form
+        setShowCreateAccount(true);
+      }
+      
+      // Close the login window
+      if (loginWindow) {
+        loginWindow.close();
+      }
+    }, 3000);
+  };
+
+  const handleCreateAccount = () => {
+    setIsLoading(true);
+    
+    // Simulate account creation
     setTimeout(() => {
       localStorage.setItem('hasVisitedLandingPage', 'true');
-      // This will trigger a re-render in the parent component
-      window.dispatchEvent(new CustomEvent('entryPageComplete'));
+      localStorage.setItem('userProfile', JSON.stringify(formData));
+      navigate('/dashboard');
     }, 2000);
+  };
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
   };
 
   return (
@@ -83,31 +124,99 @@ const InteractiveEntryPage = () => {
           
           {/* Content */}
           <div className="relative z-10 space-y-6">
-            {/* Logo and Text */}
-            <div className="flex items-center justify-center gap-3 mb-6">
-              <div className="p-2 rounded-lg bg-purple-600/20 border border-purple-500/30">
-                <GitBranch size={24} className="text-purple-400" />
-              </div>
-              <h1 className="text-2xl md:text-3xl font-bold text-white purple-glow">
-                Dgit - Decentralised Github
-              </h1>
-            </div>
-
-            {/* Sign Up Button */}
-            <div className="relative">
-              {!isLoading ? (
-                <Button 
-                  onClick={handleSignUp}
-                  className="w-full py-4 text-lg font-semibold bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white border-0 glow transition-all duration-300"
-                >
-                  Sign Up with Internet Identity
-                </Button>
-              ) : (
-                <div className="w-full py-4 flex items-center justify-center">
-                  <InfinityLoader />
+            {!showCreateAccount ? (
+              <>
+                {/* Logo and Text */}
+                <div className="flex items-center justify-center gap-3 mb-6">
+                  <div className="p-2 rounded-lg bg-purple-600/20 border border-purple-500/30">
+                    <GitBranch size={24} className="text-purple-400" />
+                  </div>
+                  <h1 className="text-2xl md:text-3xl font-bold text-white purple-glow">
+                    Dgit - Decentralised Github
+                  </h1>
                 </div>
-              )}
-            </div>
+
+                {/* Login Button */}
+                <div className="relative">
+                  {!isLoading ? (
+                    <Button 
+                      onClick={handleInternetIdentityLogin}
+                      className="w-full py-4 text-lg font-semibold bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white border-0 glow transition-all duration-300"
+                    >
+                      Login with Internet Identity
+                    </Button>
+                  ) : (
+                    <div className="w-full py-4 flex items-center justify-center">
+                      <InfinityLoader />
+                    </div>
+                  )}
+                </div>
+              </>
+            ) : (
+              <>
+                {/* Create Account Form */}
+                <Card className="bg-transparent border-purple-500/30">
+                  <CardHeader>
+                    <CardTitle className="text-white text-center flex items-center justify-center gap-2">
+                      <User size={20} className="text-purple-400" />
+                      Create Your Account
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="name" className="text-purple-200">Full Name</Label>
+                      <Input
+                        id="name"
+                        value={formData.name}
+                        onChange={(e) => handleInputChange('name', e.target.value)}
+                        className="bg-black/40 border-purple-500/30 text-white placeholder:text-purple-300"
+                        placeholder="Enter your full name"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="email" className="text-purple-200">Email</Label>
+                      <div className="relative">
+                        <Mail size={16} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-purple-400" />
+                        <Input
+                          id="email"
+                          type="email"
+                          value={formData.email}
+                          onChange={(e) => handleInputChange('email', e.target.value)}
+                          className="bg-black/40 border-purple-500/30 text-white placeholder:text-purple-300 pl-10"
+                          placeholder="Enter your email"
+                        />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="username" className="text-purple-200">Username</Label>
+                      <Input
+                        id="username"
+                        value={formData.username}
+                        onChange={(e) => handleInputChange('username', e.target.value)}
+                        className="bg-black/40 border-purple-500/30 text-white placeholder:text-purple-300"
+                        placeholder="Choose a username"
+                      />
+                    </div>
+                    <div className="flex gap-3 pt-4">
+                      <Button
+                        onClick={() => setShowCreateAccount(false)}
+                        variant="outline"
+                        className="flex-1 border-purple-500/30 text-purple-200 hover:bg-purple-600/20"
+                      >
+                        Back
+                      </Button>
+                      <Button
+                        onClick={handleCreateAccount}
+                        disabled={!formData.name || !formData.email || !formData.username || isLoading}
+                        className="flex-1 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white"
+                      >
+                        {isLoading ? <InfinityLoader /> : 'Create Account'}
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </>
+            )}
           </div>
         </div>
       </div>
